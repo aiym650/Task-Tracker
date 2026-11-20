@@ -18,6 +18,30 @@ class TestTaskTracker(unittest.TestCase):
 
         self.assertEqual(len(self.tracker.get_tasks()), 1)
 
+    def test_get_tasks_returns_copy(self):
+        self.tracker.add_task("Task 1")
+
+        tasks = self.tracker.get_tasks()
+        tasks.clear()
+
+        self.assertEqual(len(self.tracker.get_tasks()), 1)
+
+    def test_complete_task_rejects_boolean_id(self):
+        task = self.tracker.add_task("Task 1")
+
+        result = self.tracker.complete_task(True)
+
+        self.assertFalse(result)
+        self.assertFalse(task["completed"])
+
+    def test_delete_task_rejects_boolean_id(self):
+        task = self.tracker.add_task("Task 1")
+
+        result = self.tracker.delete_task(True)
+
+        self.assertFalse(result)
+        self.assertEqual(len(self.tracker.get_tasks()), 1)
+
     def test_complete_task(self):
         task = self.tracker.add_task("Task 1")
 

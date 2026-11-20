@@ -12,9 +12,12 @@ class TaskTracker:
         return task
 
     def get_tasks(self):
-        return self.tasks
+        return self.tasks.copy()
 
     def complete_task(self, task_id):
+        if type(task_id) is not int:
+            return False
+
         for task in self.tasks:
             if task["id"] == task_id:
                 task["completed"] = True
@@ -23,22 +26,12 @@ class TaskTracker:
         return False
 
     def delete_task(self, task_id):
+        if type(task_id) is not int:
+            return False
+
         for task in self.tasks:
             if task["id"] == task_id:
                 self.tasks.remove(task)
                 return True
 
         return False
-
-
-if __name__ == "__main__":
-    tracker = TaskTracker()
-
-    tracker.add_task("Learn Python")
-    tracker.add_task("Complete assignment")
-
-    print("My tasks:")
-
-    for task in tracker.get_tasks():
-        status = "Done" if task["completed"] else "Not completed"
-        print(f'{task["id"]}. {task["title"]} - {status}')
